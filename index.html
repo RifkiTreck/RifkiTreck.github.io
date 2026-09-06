@@ -1,61 +1,87 @@
-if selected_tab == 2 then
-        imgui.Text(u8"🔫 WEAPON MENU")
-        imgui.Separator()
-        
-  🔒 Cerita Sedih: Kode yang Tak Pernah Selesai
- 
-“Setiap baris kode adalah doa yang diketik jari, tapi tak semua doa bisa dijalankan.”
- 
- 
- 
-Aku Rifki, seorang pemuda yang menghabiskan malamnya dengan layar terminal yang menyala redup. Di layar itu tertulis proyek sederhana yang kuberi nama Free_SMS V1 — alat yang kubuat agar orang-orang yang tak punya pulsa tetap bisa mengirim pesan kepada orang yang mereka sayangi.
- 
-Di samping papan ketik, ada foto kecil yang sudah mulai pudar: Dia, Laras. Orang yang paling ingin aku kirimi pesan, tapi tak pernah bisa kusampaikan kata-katanya.
- 
-Malam itu, hujan turun deras di luar jendela kamar yang sempit. Jari-jariku menari di atas tuts, mengetik baris demi baris kode. Setiap kali aku menulis fungsi  kirim_pesan() , di dalam hatiku aku berharap… kalau saja kode ini bisa bekerja juga untukku — bisa mengirim apa yang tersimpan di hatiku kepada dia.
- 
-“Fungsi kirim_sms(nomor, pesan):
- 
-- Jika nomor tidak aktif: kembalikan 'Gagal'*
-- Jika pesan terlalu berat: sistem akan membuangnya*
-- Tapi pesan dari hati… tak pernah bisa dikirim.”*
- 
-Sudah tiga bulan sejak dia pergi. Tanpa pamit. Tanpa pesan terakhir. Nomornya sudah tidak aktif. Dan kode ini… ini satu-satunya cara bagiku untuk merasa masih “berhubungan” dengan dunia yang dia tinggalkan.
- 
-Kulihat di layar terminal, persentase selesai: 98%. Hampir jadi. Tinggal satu baris penutup, satu perintah  end . Tapi tanganku berhenti. Mataku kabur oleh air mata yang jatuh ke papan ketik.
- 
-Aku sadar:
- 
-- 💻 Kode ini bisa mengirim ribuan pesan ke siapa saja.
-- Tapi tidak bisa mengirim pesan kepada orang yang sudah tidak ada.
-- Tidak bisa memutar waktu kembali.
-- Tidak bisa meminta maaf untuk hal yang sudah terlambat.
- 
-Aku menatap tulisan di layar — Mulai bot free sms — dan tiba-tiba rasanya semua baris kode ini jadi kosong. Seberapa hebat pun pemrograman yang kubuat, tidak ada algoritma yang bisa mengembalikan seseorang yang sudah pergi.
- 
-Jari gemetar menekan tombol panah ke bawah, turun ke menu terakhir: Keluar.
- 
-Sebelum menekan Enter, aku mengetik satu baris komentar di paling bawah kode, yang tak akan pernah dibaca siapa pun:
- 
-python
-  
-# Laras, kalau saja kode ini bisa sampai ke kamu...
-# Dari Rifki, yang tak pernah sempat bilang: "Aku sayang kamu"
-# Pesan terkirim: TAPI TUJUAN TIDAK ADA
-# Status: SEDIH / TIDAK BISA DIULANG
- 
- 
-Lalu aku menekan Enter.
- 
-Layar jadi hitam. Semua kode, semua harapan, hilang seketika. Di luar, hujan masih turun. Dan aku, Rifki, sadar: di dunia nyata, tidak ada tombol undo, tidak ada fungsi ulang, dan tidak ada kode yang bisa memperbaiki hati yang sudah patah.
- 
-Program dihentikan.
-Sisa kenangan: 100%.
-Kesedihan: Tidak bisa dihapus.
- 
- 
-🖤 Penutup
- 
-“Kita bisa menulis kode untuk segalanya di komputer, tapi kita tak pernah bisa menulis kode untuk hati manusia. Karena cinta itu bukan logika, itu perasaan — dan kalau sudah hilang, tidak ada perintah  restore  yang bisa mengembalikannya.”
- 
- 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kode Yang Tak Pernah Selesai</title>
+<style>
+body {
+  background: #0a0a0a;
+  color: #00ff88;
+  font-family: 'Courier New', monospace;
+  padding: 40px 20px;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: auto;
+}
+h1 {
+  color: #ffaa00;
+  text-align: center;
+  border-bottom: 2px solid #00ff88;
+  padding-bottom: 10px;
+}
+.code {
+  background: #111;
+  padding: 15px;
+  border-left: 3px solid #00ff88;
+  margin: 20px 0;
+  white-space: pre-wrap;
+}
+.heart { color: #ff3366; }
+.status { color: #ffaa00; }
+</style>
+</head>
+<body>
+
+<h1>👨‍💻 WEAPON MENU</h1>
+
+<p>"Setiap baris kode adalah doa yang diketik jari, tapi tak semua doa bisa dijalankan."</p>
+
+<p>Aku Rifki, seorang pemuda yang menghabiskan malamnya dengan layar terminal yang menyala redup. Di layar itu tertulis proyek sederhana yang kuberi nama <b>Free_SMS_V1</b> — alat buat bantuin agar orang-orang yang tak punya pulsa tetap bisa mengirim pesan ke orang yang mereka sayangi.</p>
+
+<p>Di samping papan ketik, ada foto kecil yang sudah mulai pudar: Dia, Laras. Orang yang paling ingin aku kirimi pesan, tapi tak pernah bisa kusampaikan kata-katanya.</p>
+
+<div class="code">
+Malam itu, hujan turun deras di luar jendela kamar yang sempit.
+Jari-jariku menari di atas tuts, mengetik baris demi baris kode.
+Setiap kali aku menulis fungsi kirim_pesan(), di dalam hatiku aku berharap... 
+kala saja kode ini bekerja juga untukku — bisa mengirim apa yang tersimpan di hatiku kepada dia.
+
+"Fungsi kirim_sms(nomor, pesan)" - Jika nomor tidak aktif, kembalikan 'Gagal'
+"Jika pesan terlalu berat: sistem akan membuangnya." 
+
+Tapi pesan dari hati... tak pernah bisa dikirim.
+</div>
+
+<p>Sudah tiga bulan sejak dia pergi. Tanpa pamit. Tanpa pesan terakhir. Nomernya sudah tidak aktif.</p>
+
+<p>Dan kode ini... ini satu-satunya cara bagiku untuk merasa masih "berhubungan" dengan dunia yang dia tinggalkan.</p>
+
+<p>Kulihat di layar terminal, persentase selesai: <b>98%</b>. Hampir jadi. Tinggal satu baris penutup, satu perintah end.</p>
+
+<p>Tapi tanganku berhenti. Mataku kabur oleh air mata yang jatuh ke papan ketik.</p>
+
+<p>Aku sadar: - <b>Kode ini bisa mengirim ribuan pesan ke siapa saja</b> - Tapi tidak bisa mengirim pesan kepada orang yang sudah tidak ada.<br>
+- <b>Tidak bisa memutar waktu kembali</b> - Tidak bisa meminta maaf untuk hal yang sudah terlambat.</p>
+
+<p>Aku menatap tulisan di layar — Mulai bot free sms — dan tiba-tiba rasanya semua baris kode ini jadi kosong.</p>
+
+<p>Sebelum menekan Enter, aku mengetik satu baris komentar di paling bawah kode, yang tak akan pernah dibaca siapa pun:</p>
+
+<div class="code"># Untuk Laras, kalau saja kode ini bisa sampai ke kamu... <br># Dari Rifki, yang tak pernah sempat bilang: "Aku sayang kamu"</div>
+
+<p>Pesan terkirim: <span class="status">TAPI TUJUAN TIDAK ADA</span> # Status: <span class="status">SEDIH / TIDAK BISA DIULANG</span></p>
+
+<p>Lalu aku menekan Enter. Layar jadi hitam. Semua kode, semua harapan, hilang seketika.</p>
+
+<p>Di luar, hujan masih turun. Dan aku, Rifki, sadar: di dunia nyata, tidak ada tombol undo, tidak ada fungsi ulang, dan tidak ada kode yang bisa memperbaiki hati yang sudah patah.</p>
+
+<p>Program dihentikan. Sisa kenangan: <b>100%</b>. Kesedihan: <span class="heart">Tidak bisa dihapus</span> ❤️</p>
+
+<h2 style="text-align:center; margin-top:40px;">"Kita bisa menulis kode untuk segalanya di komputer, 
+tapi kita tak pernah bisa menulis kode untuk hati manusia. 
+Karena cinta itu bukan logika, itu perasaan — dan kalau sudah hilang, 
+tidak ada perintah restore yang bisa mengembalikannya."</h2>
+
+</body>
+</html>
