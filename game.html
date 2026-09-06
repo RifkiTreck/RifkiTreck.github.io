@@ -1,17 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>TEBAK OUTPUT KODE</title>
+<title>TEBAK OUTPUT KODE V2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{background:#000;color:#0f0;font-family:monospace;text-align:center;padding:20px}
-h1{color:#0ff;font-size:24px}
-.box{border:2px solid #0f0;padding:15px;margin:20px auto;max-width:400px;font-size:18px}
-.btn{padding:12px 25px;margin:8px;border:none;font-size:18px;cursor:pointer;border-radius:5px;font-weight:bold}
-.btn:hover{opacity:0.8}
-#timer{color:yellow;font-size:20px}
-#nyawa{color:red;font-size:20px}
-.info{display:flex;justify-content:space-around;margin-bottom:10px}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ background:#0a0a0a;
+ color:#00ff88;
+ font-family:'Orbitron', monospace;
+ text-align:center;
+ padding:20px;
+ overflow:hidden;
+ background: linear-gradient(45deg, #0a0a0a, #1a0033, #0a0a0a);
+ background-size:400% 400%;
+ animation:gradient 10s ease infinite;
+}
+@keyframes gradient{
+ 0%{background-position:0% 50%}
+ 50%{background-position:100% 50%}
+ 100%{background-position:0% 50%}
+}
+
+h1{
+ color:#ff00ff;
+ font-size:28px;
+ text-shadow:0 0 10px #ff00ff, 0 0 20px #ff00ff;
+ animation:glow 2s ease-in-out infinite alternate;
+ margin-bottom:20px;
+}
+@keyframes glow{
+ from{text-shadow:0 0 10px #ff00ff, 0 0 20px #ff00ff}
+ to{text-shadow:0 0 20px #ff00ff, 0 0 40px #ff00ff}
+}
+
+.info{display:flex;justify-content:space-around;margin-bottom:15px;font-size:18px}
+#skor{color:#00ffff;text-shadow:0 0 5px #00ffff}
+#nyawa{color:#ff0044;text-shadow:0 0 5px #ff0044}
+#timer{color:#ffff00;text-shadow:0 0 5px #ffff00;font-size:20px;margin-bottom:20px}
+
+.box{
+ border:2px solid #00ff88;
+ padding:20px;
+ margin:20px auto;
+ max-width:450px;
+ font-size:20px;
+ background:rgba(0,255,136,0.1);
+ border-radius:10px;
+ box-shadow:0 0 20px #00ff88;
+ animation:shake 0.5s;
+}
+@keyframes shake{
+ 0%,100%{transform:translateX(0)}
+ 25%{transform:translateX(-5px)}
+ 75%{transform:translateX(5px)}
+}
+
+.btn{
+ padding:15px 30px;
+ margin:10px;
+ border:2px solid #00ff88;
+ background:transparent;
+ color:#00ff88;
+ font-size:18px;
+ font-family:'Orbitron';
+ cursor:pointer;
+ border-radius:8px;
+ transition:all 0.3s;
+ position:relative;
+ overflow:hidden;
+}
+.btn:hover{
+ background:#00ff88;
+ color:#000;
+ box-shadow:0 0 20px #00ff88;
+ transform:scale(1.1);
+}
+.btn:active{transform:scale(0.95)}
+
+.gameover{
+ font-size:30px;
+ color:#ff0044;
+ animation:blink 1s infinite;
+}
+@keyframes blink{50%{opacity:0}}
 </style>
 </head>
 <body>
@@ -22,7 +96,7 @@ h1{color:#0ff;font-size:24px}
 </div>
 <div id="timer">Waktu: 10s</div>
 
-<div class="box" id="soal"></div>
+<div class="box" id="soal">Loading...</div>
 <div id="tombol"></div>
 
 <script>
@@ -32,6 +106,8 @@ let soal = [
  {kode:'console.log(typeof 5);',jawaban:'number',opsi:['number','string','int']},
  {kode:'console.log("5" - 2);',jawaban:'3',opsi:['3','52','Error']},
  {kode:'console.log(true + true);',jawaban:'2',opsi:['1','2','true']},
+ {kode:'console.log([] + {});',jawaban:'[object Object]',opsi:'[object Object]','{}','[]']},
+ {kode:'console.log(!!"0");',jawaban:'true',opsi:['true','false','Error']},
 ];
 let skor=0, nyawa=3, noSoal=0, waktu=10, timer;
 
@@ -49,8 +125,16 @@ function mulaiTimer(){
 }
 
 function tampilSoal(){
- if(nyawa<=0){alert('GAME OVER! Skor akhir: '+skor);location.reload();return}
- if(noSoal>=soal.length){alert('MENANG! Skor akhir: '+skor);location.reload();return}
+ if(nyawa<=0){
+  document.getElementById('soal').innerHTML='<div class="gameover">GAME OVER!</div>';
+  document.getElementById('tombol').innerHTML=`<button class="btn" onclick="location.reload()">MAIN LAGI</button>`;
+  return
+ }
+ if(noSoal>=soal.length){
+  document.getElementById('soal').innerHTML='<div class="gameover" style="color:#00ff88">KAMU MENANG!</div>';
+  document.getElementById('tombol').innerHTML=`<button class="btn" onclick="location.reload()">MAIN LAGI</button>`;
+  return
+ }
  
  let s=soal[noSoal];
  document.getElementById('soal').innerText=s.kode;
@@ -59,7 +143,7 @@ function tampilSoal(){
  
  let btn='';
  s.opsi.forEach(o=>{
-  btn+=`<button class="btn" style="background:#0f0" onclick="cek('${o}')">${o}</button>`
+  btn+=`<button class="btn" onclick="cek('${o}')">${o}</button>`
  })
  document.getElementById('tombol').innerHTML=btn;
  mulaiTimer();
@@ -86,4 +170,4 @@ function salah(){
 tampilSoal();
 </script>
 </body>
-</html>    
+</html>
