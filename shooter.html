@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SHOOTER RIFKI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;background:#000;overflow:hidden;font-family:monospace}
+canvas{background:linear-gradient(#001,#003);display:block;margin:0 auto}
+#info{position:absolute;top:10px;width:100%;text-align:center;color:#0f0;font-size:20px;text-shadow:0 0 5px #0f0}
+#hp{position:absolute;top:40px;width:100%;text-align:center;color:red;font-size:18px}
+</style>
+</head>
+<body>
+<div id="info">Skor: 0</div>
+<div id="hp">HP: 3 ❤️</div>
+<canvas id="game" width="400" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+let player = {x:180,y:550,w:40,h:40,speed:5};
+let peluru = [];
+let musuh = [];
+let skor = 0;
+let hp = 3;
+let keys = {};
+
+// Kontrol HP + PC
+document.addEventListener('keydown',e=>keys[e.key]=true);
+document.addEventListener('keyup',e=>keys[e.key]=false);
+
+// Buat musuh tiap 1 detik
+setInterval(()=>{
+ musuh.push({x:Math.random()*360,y:0,w:30,h:30,speed:2})
+},1000)
+
+function gameLoop(){
+ // Bersihkan layar
+ ctx.clearRect(0,0,400,600);
+ 
+ // Gerak player
+ if(keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
+ if(keys['ArrowRight'] || keys['d']) player.x += player.speed;
+ if(keys[' ']) tembak();
+ if(player.x<0) player.x=0;
+ if(player.x>360) player.x=360;
+ 
+ // Gambar player
+ ctx.fillStyle='#00ff00';
+ ctx.fillRect(player.x,player.y,player.w,player.h);
+ 
+ // Gerak + gambar peluru
+ peluru.forEach((p,i)=>{
+  p.y -= 8;
+  ctx.fillStyle='yellow';
+  ctx.fillRect(p.x,p.y,5,10);
+  if(p.y<0) peluru.splice(i,1);
+ })
+ 
+ // Gerak + gambar musuh
+ musuh.forEach((m,i)=>{
+  m.y += m.speed;
+  ctx.fillStyle='red';
+  ctx.fillRect(m.x,m.y,m.w,m.h);
+  
+  // Tabrakan peluru
+  peluru.forEach((p,j)=>{
+   if(p.x>m.x && p.x<m.x+m.w && p.y>m.y && p.y<m.y+m.h){
+    musuh.splice(i,1);
+    peluru.splice(j,1);
+    skor++;
+    document.getElementById('info').innerText='Skor: '+skor;
+   }
+  })
+  
+  // Tabrakan player
+  if(m.y>550){
+   musuh.splice(i,1);
+   hp--;
+   document.getElementById('hp').innerText='HP: '+hp+' ❤️';
+   if(hp<=0) alert('GAME OVER! Skor: '+skor);
+  }
+ })
+ 
+ requestAnimationFrame(gameLoop);
+}
+
+function tembak(){
+ // Biar gak spam
+ if(peluru.length < 5){
+  peluru.push({x:player.x+18,y:player.y});
+ }
+}
+
+gameLoop();
+</script>
+
+<div style="position:absolute;bottom:10px;width:100%;text-align:center;color:#fff">
+ Tombol: A/D atau ← → untuk gerak | Spasi untuk TEMBAK
+</div>
+</body>
+</html>
