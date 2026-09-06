@@ -3,107 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kode Yang Tak Pernah Selesai</title>
+<title>Game Tebak Kode</title>
 <style>
-body {
-  background: #0a0a0a;
-  color: #00ff88;
-  font-family: 'Courier New', monospace;
-  padding: 40px 20px;
-  line-height: 1.8;
-  max-width: 800px;
-  margin: auto;
-}
-h1 {
-  color: #ffaa00;
-  text-align: center;
-  border-bottom: 2px solid #00ff88;
-  padding-bottom: 10px;
-}
-.cursor {
-  display: inline-block;
-  width: 10px;
-  background: #00ff88;
-  animation: blink 1s infinite;
-}
-@keyframes blink {
- 50% { opacity: 0; }
-}
-#muteBtn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #00ff88;
-  color: #000;
-  border: none;
-  padding: 8px 12px;
-  font-family: 'Courier New';
-  cursor: pointer;
-  font-size: 14px;
-}
+body{background:#0a0a0a;color:#00ff88;font-family:'Courier New';text-align:center;padding:20px}
+.kode{background:#111;border:1px solid #00ff88;padding:15px;margin:20px auto;text-align:left;max-width:500px}
+button{background:#00ff88;color:#000;border:none;padding:10px 20px;margin:5px;cursor:pointer;font-weight:bold}
+button:hover{background:#ffaa00}
+#skor{color:#ffaa00;font-size:20px}
 </style>
 </head>
 <body>
+<h1>🔥 TEBAK OUTPUT KODE 🔥</h1>
+<div>Skor: <span id="skor">0</span></div>
 
-<button id="muteBtn">🔇 PLAY HUJAN</button>
-<h1>👨‍💻 WEAPON MENU</h1>
-<div id="text"></div><span class="cursor"></span>
+<div class="kode" id="soal"></div>
+
+<button onclick="jawab(0)" id="btn0"></button>
+<button onclick="jawab(1)" id="btn1"></button>
+<button onclick="jawab(2)" id="btn2"></button>
+
+<div id="hasil"></div>
 
 <script>
-const cerita = `"Setiap baris kode adalah doa yang diketik jari, tapi tak semua doa bisa dijalankan."
+let skor=0; let soalSekarang=0;
+const soal = [
+  {kode:`console.log(2 + 2 * 2);`, opsi:["6","8","4"], benar:0},
+  {kode:`let a="Rifki"; console.log(a.length);`, opsi:["4","5","6"], benar:1},
+  {kode:`console.log("10" + 5);`, opsi:["15","105","Error"], benar:1}
+];
 
-Aku Rifki, seorang pemuda yang menghabiskan malamnya dengan layar terminal yang menyala redup...
-
-Program dihentikan. Sisa kenangan: 100%. Kesedihan: Tidak bisa dihapus ❤️`;
-
-let i = 0;
-function ketik() {
-  if (i < cerita.length) {
-    document.getElementById("text").innerHTML += cerita.charAt(i);
-    i++;
-    setTimeout(ketik, 35);
-  }
-}
-ketik();
-
-// SUARA HUJAN BUATAN
-let audioCtx;
-let hujanOn = false;
-
-function buatHujan() {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const bufferSize = 4096;
-  const whiteNoise = audioCtx.createScriptProcessor(bufferSize, 1, 1);
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.value = 800;
-  whiteNoise.connect(filter);
-  filter.connect(audioCtx.destination);
-
-  whiteNoise.onaudioprocess = function(e) {
-    let output = e.outputBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      output[i] = Math.random() * 0.1; // suara gemerisik hujan
-    }
-  }
-  return whiteNoise;
+function loadSoal(){
+  document.getElementById("soal").innerText = soal[soalSekarang].kode;
+  document.getElementById("btn0").innerText = soal[soalSekarang].opsi[0];
+  document.getElementById("btn1").innerText = soal[soalSekarang].opsi[1];
+  document.getElementById("btn2").innerText = soal[soalSekarang].opsi[2];
+  document.getElementById("hasil").innerText = "";
 }
 
-let nodeHujan;
-document.getElementById("muteBtn").onclick = function() {
-  if(!hujanOn){
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    nodeHujan = buatHujan();
-    nodeHujan.connect(audioCtx.destination);
-    this.innerText = "🔊 MUTE HUJAN";
-    hujanOn = true;
+function jawab(pilih){
+  if(pilih == soal[soalSekarang].benar){
+    skor++; document.getElementById("hasil").innerText = "BENAR! +1 🔥";
   } else {
-    nodeHujan.disconnect();
-    this.innerText = "🔇 PLAY HUJAN";
-    hujanOn = false;
+    document.getElementById("hasil").innerText = "SALAH! Jawaban: " + soal[soalSekarang].opsi[soal[soalSekarang].benar];
   }
+  document.getElementById("skor").innerText = skor;
+  soalSekarang = (soalSekarang+1) % soal.length;
+  setTimeout(loadSoal, 1500);
 }
+loadSoal();
 </script>
-
 </body>
 </html>
