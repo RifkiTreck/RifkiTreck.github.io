@@ -1,3 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kode Yang Tak Pernah Selesai</title>
+<style>
+body {
+  background: #0a0a0a;
+  color: #00ff88;
+  font-family: 'Courier New', monospace;
+  padding: 40px 20px;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: auto;
+}
+h1 {
+  color: #ffaa00;
+  text-align: center;
+  border-bottom: 2px solid #00ff88;
+  padding-bottom: 10px;
+}
+.cursor {
+  display: inline-block;
+  width: 10px;
+  background: #00ff88;
+  animation: blink 1s infinite;
+}
+@keyframes blink { 50% { opacity: 0; }
+#muteBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #00ff88;
+  color: #000;
+  border: none;
+  padding: 8px 12px;
+  font-family: 'Courier New';
+  cursor: pointer;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<button id="muteBtn">🔇 PLAY</button>
+<h1>👨‍💻 WEAPON MENU</h1>
+<div id="text"></div><span class="cursor"></span>
+
 <audio id="rain" loop>
   <source src="https://cdn.pixabay.com/audio/2025/01/30/audio_ba4d8d3a9a.mp3" type="audio/mpeg">
 </audio>
@@ -19,7 +68,6 @@ function ketik() {
 }
 ketik();
 
-// Tombol play/pause
 document.getElementById("muteBtn").onclick = function() {
   let audio = document.getElementById("rain");
   if(audio.paused){
@@ -31,3 +79,6 @@ document.getElementById("muteBtn").onclick = function() {
   }
 }
 </script>
+
+</body>
+</html>
