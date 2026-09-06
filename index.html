@@ -20,68 +20,60 @@ h1 {
   border-bottom: 2px solid #00ff88;
   padding-bottom: 10px;
 }
-.code {
-  background: #111;
-  padding: 15px;
-  border-left: 3px solid #00ff88;
-  margin: 20px 0;
-  white-space: pre-wrap;
+.cursor {
+  display: inline-block;
+  width: 10px;
+  background: #00ff88;
+  animation: blink 1s infinite;
 }
-.heart { color: #ff3366; }
-.status { color: #ffaa00; }
+@keyframes blink { 50% { opacity: 0; } }
+#muteBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #00ff88;
+  color: #000;
+  border: none;
+  padding: 8px 12px;
+  font-family: 'Courier New';
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
 
-<h1>👨‍💻 RIFKI COODING</h1>
+<button id="muteBtn">🔊 MUTE</button>
+<h1>👨‍💻 WEAPON MENU</h1>
+<div id="text"></div><span class="cursor"></span>
 
-<p>"Setiap baris kode adalah doa yang diketik jari, tapi tak semua doa bisa dijalankan."</p>
+<audio id="rain" loop autoplay>
+  <source src="https://cdn.pixabay.com/audio/2025/01/30/audio_ba4d8d3a9a.mp3" type="audio/mpeg">
+</audio>
 
-<p>Aku Rifki, seorang pemuda yang menghabiskan malamnya dengan layar terminal yang menyala redup. Di layar itu tertulis proyek sederhana yang kuberi nama <b>Free_SMS_V1</b> — alat buat bantuin agar orang-orang yang tak punya pulsa tetap bisa mengirim pesan ke orang yang mereka sayangi.</p>
+<script>
+const cerita = `"Setiap baris kode adalah doa yang diketik jari, tapi tak semua doa bisa dijalankan."
 
-<p>Di samping papan ketik, ada foto kecil yang sudah mulai pudar: Dia, Laras. Orang yang paling ingin aku kirimi pesan, tapi tak pernah bisa kusampaikan kata-katanya.</p>
+Aku Rifki, seorang pemuda yang menghabiskan malamnya dengan layar terminal yang menyala redup...
 
-<div class="code">
-Malam itu, hujan turun deras di luar jendela kamar yang sempit.
-Jari-jariku menari di atas tuts, mengetik baris demi baris kode.
-Setiap kali aku menulis fungsi kirim_pesan(), di dalam hatiku aku berharap... 
-kala saja kode ini bekerja juga untukku — bisa mengirim apa yang tersimpan di hatiku kepada dia.
+Program dihentikan. Sisa kenangan: 100%. Kesedihan: Tidak bisa dihapus ❤️`;
 
-"Fungsi kirim_sms(nomor, pesan)" - Jika nomor tidak aktif, kembalikan 'Gagal'
-"Jika pesan terlalu berat: sistem akan membuangnya." 
+let i = 0;
+function ketik() {
+  if (i < cerita.length) {
+    document.getElementById("text").innerHTML += cerita.charAt(i);
+    i++;
+    setTimeout(ketik, 35);
+  }
+}
+ketik();
 
-Tapi pesan dari hati... tak pernah bisa dikirim.
-</div>
-
-<p>Sudah tiga bulan sejak dia pergi. Tanpa pamit. Tanpa pesan terakhir. Nomernya sudah tidak aktif.</p>
-
-<p>Dan kode ini... ini satu-satunya cara bagiku untuk merasa masih "berhubungan" dengan dunia yang dia tinggalkan.</p>
-
-<p>Kulihat di layar terminal, persentase selesai: <b>98%</b>. Hampir jadi. Tinggal satu baris penutup, satu perintah end.</p>
-
-<p>Tapi tanganku berhenti. Mataku kabur oleh air mata yang jatuh ke papan ketik.</p>
-
-<p>Aku sadar: - <b>Kode ini bisa mengirim ribuan pesan ke siapa saja</b> - Tapi tidak bisa mengirim pesan kepada orang yang sudah tidak ada.<br>
-- <b>Tidak bisa memutar waktu kembali</b> - Tidak bisa meminta maaf untuk hal yang sudah terlambat.</p>
-
-<p>Aku menatap tulisan di layar — Mulai bot free sms — dan tiba-tiba rasanya semua baris kode ini jadi kosong.</p>
-
-<p>Sebelum menekan Enter, aku mengetik satu baris komentar di paling bawah kode, yang tak akan pernah dibaca siapa pun:</p>
-
-<div class="code"># Untuk Laras, kalau saja kode ini bisa sampai ke kamu... <br># Dari Rifki, yang tak pernah sempat bilang: "Aku sayang kamu"</div>
-
-<p>Pesan terkirim: <span class="status">TAPI TUJUAN TIDAK ADA</span> # Status: <span class="status">SEDIH / TIDAK BISA DIULANG</span></p>
-
-<p>Lalu aku menekan Enter. Layar jadi hitam. Semua kode, semua harapan, hilang seketika.</p>
-
-<p>Di luar, hujan masih turun. Dan aku, Rifki, sadar: di dunia nyata, tidak ada tombol undo, tidak ada fungsi ulang, dan tidak ada kode yang bisa memperbaiki hati yang sudah patah.</p>
-
-<p>Program dihentikan. Sisa kenangan: <b>100%</b>. Kesedihan: <span class="heart">Tidak bisa dihapus</span> ❤️</p>
-
-<h2 style="text-align:center; margin-top:40px;">"Kita bisa menulis kode untuk segalanya di komputer, 
-tapi kita tak pernah bisa menulis kode untuk hati manusia. 
-Karena cinta itu bukan logika, itu perasaan — dan kalau sudah hilang, 
-tidak ada perintah restore yang bisa mengembalikannya."</h2>
+// Tombol mute
+document.getElementById("muteBtn").onclick = function() {
+  let audio = document.getElementById("rain");
+  audio.muted = !audio.muted;
+  this.innerText = audio.muted ? "🔇 UNMUTE" : "🔊 MUTE";
+}
+</script>
 
 </body>
 </html>
