@@ -26,7 +26,9 @@ h1 {
   background: #00ff88;
   animation: blink 1s infinite;
 }
-@keyframes blink { 50% { opacity: 0; }
+@keyframes blink {
+ 50% { opacity: 0; }
+}
 #muteBtn {
   position: fixed;
   top: 20px;
@@ -43,13 +45,9 @@ h1 {
 </head>
 <body>
 
-<button id="muteBtn">🔇 PLAY</button>
+<button id="muteBtn">🔇 PLAY HUJAN</button>
 <h1>👨‍💻 WEAPON MENU</h1>
 <div id="text"></div><span class="cursor"></span>
-
-<audio id="rain" loop>
-  <source src="https://cdn.pixabay.com/audio/2025/01/30/audio_ba4d8d3a9a.mp3" type="audio/mpeg">
-</audio>
 
 <script>
 const cerita = `"Setiap baris kode adalah doa yang diketik jari, tapi tak semua doa bisa dijalankan."
@@ -68,14 +66,41 @@ function ketik() {
 }
 ketik();
 
+// SUARA HUJAN BUATAN
+let audioCtx;
+let hujanOn = false;
+
+function buatHujan() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const bufferSize = 4096;
+  const whiteNoise = audioCtx.createScriptProcessor(bufferSize, 1, 1);
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 800;
+  whiteNoise.connect(filter);
+  filter.connect(audioCtx.destination);
+
+  whiteNoise.onaudioprocess = function(e) {
+    let output = e.outputBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 0.1; // suara gemerisik hujan
+    }
+  }
+  return whiteNoise;
+}
+
+let nodeHujan;
 document.getElementById("muteBtn").onclick = function() {
-  let audio = document.getElementById("rain");
-  if(audio.paused){
-    audio.play();
-    this.innerText = "🔊 MUTE";
+  if(!hujanOn){
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    nodeHujan = buatHujan();
+    nodeHujan.connect(audioCtx.destination);
+    this.innerText = "🔊 MUTE HUJAN";
+    hujanOn = true;
   } else {
-    audio.pause();
-    this.innerText = "🔇 PLAY";
+    nodeHujan.disconnect();
+    this.innerText = "🔇 PLAY HUJAN";
+    hujanOn = false;
   }
 }
 </script>
