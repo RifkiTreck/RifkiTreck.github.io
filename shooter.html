@@ -99,7 +99,8 @@ function gameLoop(){
   })
   
   if(m.y>600){musuh.splice(i,1);hp--;document.getElementById('hp').innerText='HP: '+hp+' ❤️';
-   if(hp<=0){alert('GAME OVER! Skor: '+skor);location.reload();}
+   if(hp<=0){document.getElementById('info').innerText='GAME OVER! Skor: '+skor;
+setTimeout(()=>location.reload(),2000);;}
   }
  })
  
