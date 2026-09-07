@@ -1,93 +1,46 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>RC.COODING SHOOTER LANDSCAPE</title>
+<html><head><title>RC SHOOTER V5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="screen-orientation" content="landscape">
 <style>
-body{margin:0;background:#200;overflow:hidden;font-family:sans-serif}
-canvas{background:linear-gradient(#400,#000);display:block}
-#controls{position:absolute;bottom:30px;left:30px;display:flex;gap:15px}
-.btn{width:70px;height:70px;background:rgba(255,255,255,0.2);border:3px solid white;border-radius:50%;color:white;font-size:24px}
-#shoot{position:absolute;right:30px;bottom:80px;width:90px;height:90px;background:radial-gradient(red,darkred);font-size:16px}
-#info{position:absolute;top:10px;left:10px;color:white;background:rgba(0,0,0,0.5);padding:5px 10px;border-radius:5px}
-@media screen and (orientation: portrait) {
-  body:before{content:"PUTAR HP KE SAMPING";position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  color:white;font-size:30px;background:red;padding:20px;border-radius:10px;z-index:999}
-  canvas, #controls, #shoot{display:none}
-}
-</style>
-</head>
+body{margin:0;background:linear-gradient(#500,#000);overflow:hidden}
+canvas{display:block}
+#controls{position:absolute;bottom:40px;left:40px;display:flex;gap:20px}
+.btn{width:80px;height:80px;background:rgba(255,255,255,0.15);border:3px solid white;border-radius:50%;color:white;font-size:28px}
+#shoot{position:absolute;right:30px;bottom:70px;width:100px;height:100px;background:rgba(255,0,0,0.8);font-size:18px;font-weight:bold}
+#info{position:absolute;top:10px;left:15px;color:white;background:rgba(0,0,0,0.6);padding:8px 15px;border-radius:10px;font-size:18px}
+</style></head>
 <body>
-<div id="info">RC.COODING SHOOTER</div>
+<div id="info">RC SHOOTER V5 | Score: 0 | Nyawa: 3</div>
 <canvas id="game"></canvas>
-<div id="controls">
-  <button class="btn" id="left">◀</button>
-  <button class="btn" id="right">▶</button>
-  <button class="btn" id="jump">▲</button>
-</div>
+<div id="controls"><button class="btn" id="left">◀</button><button class="btn" id="right">▶</button><button class="btn" id="jump">▲</button></div>
 <button class="btn" id="shoot">TEMBAK</button>
-
 <script>
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-canvas.width = innerWidth; canvas.height = innerHeight;
-
-let player = {x:100,y:canvas.height-120,w:40,h:60,vy:0,speed:5};
-let bullets = []; 
-let enemies = []; for(let i=0;i<3;i++) enemies.push({x:400+i*200,y:canvas.height-120,hp:2});
-let keys = {}; let score = 0;
-
-// Kontrol
-['left','right','jump','shoot'].forEach(id=>{
-  document.getElementById(id).ontouchstart = () => keys[id]=1;
-  document.getElementById(id).ontouchend = () => keys[id]=0;
-})
-
-function update(){
-  if(keys.left) player.x-=player.speed;
-  if(keys.right) player.x+=player.speed;
-  if(keys.jump && player.y>=canvas.height-120){player.vy=-18; keys.jump=0;}
-  
-  player.vy+=0.6; player.y+=player.vy;
-  if(player.y>canvas.height-120) player.y=canvas.height-120;
-
-  if(keys.shoot){ bullets.push({x:player.x+40,y:player.y+25,dx:12}); keys.shoot=0; }
-
-  bullets.forEach(b=>b.x+=b.dx);
-  bullets = bullets.filter(b=>b.x<canvas.width);
-
-  enemies.forEach(e=>{
-    bullets.forEach(b=>{
-      if(Math.abs(b.x-e.x)<35 && Math.abs(b.y-e.y)<30){ e.hp--; b.x=9999; }
-    })
-  })
-  enemies = enemies.filter(e=>e.hp>0);
-  score = 3 - enemies.length;
-}
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#300"; ctx.fillRect(0,canvas.height-100,canvas.width,100); // tanah
-  
-  // Player biru
-  ctx.fillStyle="#00aaff"; ctx.fillRect(player.x,player.y,player.w,player.h);
-  // Musuh hijau
-  ctx.fillStyle="#00ff00"; enemies.forEach(e=>ctx.fillRect(e.x,e.y,35,60));
-  // Peluru kuning
-  ctx.fillStyle="yellow"; bullets.forEach(b=>ctx.fillRect(b.x,b.y,12,5));
-  
-  // Score
-  ctx.fillStyle="white"; ctx.font="20px Arial"; ctx.fillText("Score: "+score, 20, 40);
-  
-  if(enemies.length==0){
-    ctx.fillStyle="orange"; ctx.font="60px Arial"; 
-    ctx.fillText("MENANG!", canvas.width/2-120, 100);
-  }
-}
-
-function loop(){ update(); draw(); requestAnimationFrame(loop); }
-loop();
-</script>
-</body>
-</html>
+const c=document.getElementById('game'),ctx=c.getContext('2d'),info=document.getElementById('info');
+c.width=innerWidth;c.height=innerHeight;
+let p={x:100,y:c.height-120,w:40,h:60,vy:0,s:5},b=[],e=[],eb=[],ex=[],keys={},score=0,nyawa=3;
+for(let i=0;i<4;i++)e.push({x:600+i*300,y:c.height-120,hp:2});
+['left','right','jump'].forEach(id=>{document.getElementById(id).ontouchstart=()=>keys[id]=1;document.getElementById(id).ontouchend=()=>keys[id]=0;})
+document.getElementById('shoot').onclick=()=>b.push({x:p.x+40,y:p.y+35,dx:14}); // FIX 1: y+35 biar kena
+c.onclick=()=>location.reload();
+function u(){
+if(keys.left)p.x-=p.s;if(keys.right)p.x+=p.s;if(keys.jump&&p.y>=c.height-120){p.vy=-18;keys.jump=0;}
+p.vy+=0.6;p.y+=p.vy;if(p.y>c.height-120)p.y=c.height-120;if(p.x<0)p.x=0;if(p.x>c.width-50)p.x=c.width-50; // FIX 2: batas layar
+b.forEach(bu=>bu.x+=bu.dx);b=b.filter(bu=>bu.x<c.width);
+e.forEach(en=>{if(Math.random()<0.015)eb.push({x:en.x,y:en.y+30,dx:-9});
+b.forEach(bu=>{if(Math.abs(bu.x-en.x)<35&&Math.abs(bu.y-en.y)<35){en.hp--;bu.x=9999;score++;}})});
+e=e.filter(en=>en.hp>0);eb.forEach(bu=>bu.x+=bu.dx);eb=eb.filter(bu=>bu.x>0);
+eb.forEach(bu=>{if(Math.abs(bu.x-p.x)<30&&Math.abs(bu.y-p.y)<30){nyawa--;bu.x=9999;if(nyawa<=0)location.reload();}});
+e.forEach(en=>{if(en.hp<=0)ex.push({x:en.x+15,y:en.y+30,t:25})});ex.forEach(x=>x.t--);ex=ex.filter(x=>x.t>0);
+info.innerText=`RC SHOOTER V5 | Score: ${score} | Nyawa: ${nyawa}`;}
+function d(){
+ctx.clearRect(0,0,c.width,c.height);
+for(let i=0;i<c.width;i+=60)ctx.fillRect(i,c.height-100,25,100); // background tiang
+ctx.fillStyle="#00aaff";ctx.fillRect(p.x,p.y,p.w,p.h);
+ctx.fillStyle="#00ff00";e.forEach(en=>ctx.fillRect(en.x,en.y,35,60));
+ctx.fillStyle="yellow";b.forEach(bu=>ctx.fillRect(bu.x,bu.y,14,5));
+ctx.fillStyle="red";eb.forEach(bu=>ctx.fillRect(bu.x,bu.y,10,5));
+ctx.fillStyle="orange";ex.forEach(x=>{ctx.beginPath();ctx.arc(x.x,x.y,25-x.t,0,6.28);ctx.fill()});
+if(e.length==0){ctx.fillStyle="orange";ctx.font="bold 70px Arial";ctx.fillText("MENANG!",c.width/2-140,120);
+ctx.font="30px Arial";ctx.fillText("TAP LAYAR BUAT ULANG",c.width/2-170,170);}}
+function l(){u();d();requestAnimationFrame(l)}l();
+</script></body></html>
