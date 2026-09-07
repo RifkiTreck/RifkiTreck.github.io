@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><title>RC SHOOTER V7</title>
+<html><head><title>RC SHOOTER V8</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <style>
 body{margin:0;background:linear-gradient(#500,#000);overflow:hidden}
@@ -10,7 +10,7 @@ canvas{display:block}
 #info{position:absolute;top:10px;left:15px;color:white;background:rgba(0,0,0,0.6);padding:8px 15px;border-radius:10px;font-size:18px}
 </style></head>
 <body>
-<div id="info">RC SHOOTER V7 | Score: 0 | Nyawa: 3</div>
+<div id="info">RC SHOOTER V8 | Score: 0 | Nyawa: 3</div>
 <canvas id="game"></canvas>
 <div id="controls"><button class="btn" id="left">◀</button><button class="btn" id="right">▶</button><button class="btn" id="jump">▲</button></div>
 <button class="btn" id="shoot">TEMBAK</button>
@@ -18,39 +18,49 @@ canvas{display:block}
 const c=document.getElementById('game'),ctx=c.getContext('2d'),info=document.getElementById('info');
 c.width=innerWidth;c.height=innerHeight;
 
-function drawPlayer(x,y){ // GAMBAR PLAYER PAKE KODE
-  ctx.fillStyle="#00aaff"; ctx.fillRect(x+10,y+20,30,30); // badan
-  ctx.fillStyle="#ffdbac"; ctx.fillRect(x+15,y+10,20,15); // kepala
-  ctx.fillStyle="black"; ctx.fillRect(x+35,y+25,15,5); // senjata
+function drawPlayer(x,y){
+  ctx.fillStyle="#00aaff"; ctx.fillRect(x+10,y+20,30,30);
+  ctx.fillStyle="#ffdbac"; ctx.fillRect(x+15,y+10,20,15);
+  ctx.fillStyle="black"; ctx.fillRect(x+35,y+25,15,5);
 }
-function drawEnemy(x,y){ // GAMBAR MUSUH PAKE KODE
-  ctx.fillStyle="#00ff00"; ctx.fillRect(x+5,y+15,30,35); // badan
-  ctx.fillStyle="red"; ctx.fillRect(x+10,y+5,20,12); // kepala
-  ctx.fillStyle="black"; ctx.fillRect(x-5,y+25,12,5); // senjata
+function drawEnemy(x,y){
+  ctx.fillStyle="#00ff00"; ctx.fillRect(x+5,y+15,30,35);
+  ctx.fillStyle="red"; ctx.fillRect(x+10,y+5,20,12);
+  ctx.fillStyle="black"; ctx.fillRect(x-5,y+25,12,5);
 }
-function drawBullet(x,y){ // GAMBAR PELURU
+function drawBullet(x,y){
   ctx.fillStyle="yellow"; ctx.fillRect(x,y,12,4);
 }
 
 let p={x:100,y:c.height-120,w:50,h:60,vy:0,s:5},b=[],e=[],eb=[],ex=[],keys={},score=0,nyawa=3;
-for(let i=0;i<4;i++)e.push({x:600+i*300,y:c.height-120,hp:2});
+for(let i=0;i<4;i++)e.push({x:700+i*300,y:c.height-120,hp:2});
 ['left','right','jump'].forEach(id=>{document.getElementById(id).ontouchstart=()=>keys[id]=1;document.getElementById(id).ontouchend=()=>keys[id]=0;})
 document.getElementById('shoot').onclick=()=>b.push({x:p.x+45,y:p.y+30,dx:14});
 c.onclick=()=>location.reload();
+
 function u(){
 if(keys.left)p.x-=p.s;if(keys.right)p.x+=p.s;if(keys.jump&&p.y>=c.height-120){p.vy=-18;keys.jump=0;}
 p.vy+=0.6;p.y+=p.vy;if(p.y>c.height-120)p.y=c.height-120;if(p.x<0)p.x=0;if(p.x>c.width-50)p.x=c.width-50;
 b.forEach(bu=>bu.x+=bu.dx);b=b.filter(bu=>bu.x<c.width);
-e.forEach(en=>{if(Math.random()<0.015)eb.push({x:en.x,y:en.y+30,dx:-9});
-b.forEach(bu=>{if(Math.abs(bu.x-en.x)<35&&Math.abs(bu.y-en.y)<35){en.hp--;bu.x=9999;score++;}})});
-e=e.filter(en=>en.hp>0);eb.forEach(bu=>bu.x+=bu.dx);eb=eb.filter(bu=>bu.x>0);
-eb.forEach(bu=>{if(Math.abs(bu.x-p.x)<30&&Math.abs(bu.y-p.y)<30){nyawa--;bu.x=9999;if(nyawa<=0)location.reload();}});
+
+e.forEach(en=>{
+  en.x -= 1.5; // MUSUH JALAN
+  if(en.x < -50) en.x = c.width + 50; // RESPAWN
+  if(Math.random()<0.03)eb.push({x:en.x,y:en.y+35,dx:-10}); // TEMBAK PAS KE BADAN
+  b.forEach(bu=>{if(Math.abs(bu.x-en.x)<35&&Math.abs(bu.y-en.y)<35){en.hp--;bu.x=9999;score++;}})
+});
+e=e.filter(en=>en.hp>0);
+
+eb.forEach(bu=>bu.x+=bu.dx);eb=eb.filter(bu=>bu.x>0);
+eb.forEach(bu=>{if(Math.abs(bu.x-p.x)<35&&Math.abs(bu.y-p.y)<35){nyawa--;bu.x=9999;if(nyawa<=0)location.reload();}});
+
 e.forEach(en=>{if(en.hp<=0)ex.push({x:en.x+15,y:en.y+30,t:25})});ex.forEach(x=>x.t--);ex=ex.filter(x=>x.t>0);
-info.innerText=`RC SHOOTER V7 | Score: ${score} | Nyawa: ${nyawa}`;}
+info.innerText=`RC SHOOTER V8 | Score: ${score} | Nyawa: ${nyawa}`;}
+
 function d(){
 ctx.clearRect(0,0,c.width,c.height);
 for(let i=0;i<c.width;i+=60)ctx.fillRect(i,c.height-100,25,100);
-drawPlayer(p.x,p.y); // PAKE FUNGSI GAMBAR
+drawPlayer(p.x,p.y);
 e.forEach(en=>drawEnemy(en.x,en.y));
 b.forEach(bu=>drawBullet(bu.x,bu.y));
 ctx.fillStyle="red";eb.forEach(bu=>ctx.fillRect(bu.x,bu.y,10,5));
